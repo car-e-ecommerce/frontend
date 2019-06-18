@@ -1,0 +1,111 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<section class="box-list">
+    <div class="row">
+        <div class="col-3 col-lg-3">
+            <mat-form-field id="no-underline">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter by Code Producto">
+            </mat-form-field>
+        </div>
+        <div class="col-3 col-lg-6">
+            <div class="text-center">
+                <button (click)="exportAsXLSX()"
+                 class="buttonCustom"
+                 matTooltip="Download list in CSV"
+                 [matTooltipPosition]="position.value">
+                    <img src="../../../assets/csv-modern.png">
+                </button>
+            </div>
+        </div>
+        <div class="col-3 col-lg-3 text-center">
+            <button
+                mat-raised-button color="primary"
+                class="new-form"
+                matTooltip="Create new Manuals"
+                [matTooltipPosition]="position.value">
+                <a routerLink="/create-management-manuals/{{userId}}">Nuevo</a>
+            </button>
+        </div>
+    </div>
+
+    
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <!-- Codigo Column -->
+        <ng-container matColumnDef="codigo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Codigo </th>
+            <td mat-cell *matCellDef="let element" class="items text-left"> {{element.codigo}}</td>
+        </ng-container>
+
+        <!-- Descripción Column -->
+        <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef > Descripción </th>
+            <td mat-cell *matCellDef="let element" class="items"> {{element.descripcion}} </td>
+        </ng-container>
+
+        <!-- Referencia Column -->
+        <ng-container matColumnDef="referencia">
+            <th mat-header-cell *matHeaderCellDef> Referencia </th>
+            <td mat-cell *matCellDef="let element" class="items"> {{element.referencia}} </td>
+        </ng-container>
+
+        <!-- Contenido Column -->
+        <ng-container matColumnDef="contenido">
+            <th mat-header-cell *matHeaderCellDef> Contenido </th>
+            <td mat-cell *matCellDef="let element" class="items"> {{element.contenido}} </td>
+        </ng-container>
+
+        <!-- Estado Column -->
+        <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef> Estado </th>
+            <td mat-cell *matCellDef="let element" class="items"> {{element.estado}} </td>
+        </ng-container>
+
+        <!-- Homologación Column -->
+        <ng-container matColumnDef="homol">
+            <th mat-header-cell *matHeaderCellDef> Homologación </th>
+            <td mat-cell *matCellDef="let element" class="items"> {{element.homologado === '1' ? 'Si' : 'No'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fechaHomologado">
+            <th mat-header-cell *matHeaderCellDef> Fecha Homologación </th>
+            <td mat-cell *matCellDef="let element" class="items"> {{element.homologado === '1' ? element.dateHomolog : '--'}} </td>
+        </ng-container>
+
+        <!-- Formato Column -->
+        <ng-container matColumnDef="formato">
+            <th mat-header-cell *matHeaderCellDef> Formato </th>
+            <td mat-cell *matCellDef="let element" class="items"> {{element.formato}} </td>
+        </ng-container>
+
+        <!-- Numero de hojas Column -->
+        <ng-container matColumnDef="numeroHojas">
+            <th mat-header-cell *matHeaderCellDef> Nº Hojas </th>
+            <td mat-cell *matCellDef="let element" class="items"> {{element.numeroHojas}} </td>
+        </ng-container>
+
+        <!-- Editar Manual Column -->
+        <ng-container matColumnDef="editar">
+            <th mat-header-cell *matHeaderCellDef> Editar </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-raised-button color="primary">
+                    <a routerLink="/edit-product/{{element.codigo}}/{{userId}}">Editar</a>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="row text-center" style="padding-top: 24px;">
+        <div class="col-lg-6 offset-lg-1">
+            <mat-paginator 
+                [length]="length"
+                [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = $event">
+            </mat-paginator>
+        </div>
+    </div>
+</section>

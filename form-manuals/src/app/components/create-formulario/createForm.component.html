@@ -1,0 +1,327 @@
+<!--The content below is only a placeholder and can be replaced.-->
+  <div class="">
+    <div class="row">
+      <div class="col-sm-3 offset-sm-1">
+            <a routerLink='/{{userId}}' ><img src="../../../assets/volver.png" alt="Volver al listado" style="width: 38px; height: 38px;"></a>
+      </div>
+  <!--<div class="col-sm-4">
+        <div class="content-state">
+            <span class="title-state">Estado: </span><span class="state">{{datos.estado}}</span>
+        </div>
+      </div>-->
+    </div>
+      
+    <div class="box-contents"> 
+      <div class="row">
+        <div class="col-3 col-sm-2 offset-sm-1">
+          <mat-form-field appearance="outline" class="box">
+            <mat-label>Código</mat-label>
+            <input 
+              matInput 
+              [(ngModel)]="form.datos_manual.codigo_manual" 
+              (ngModelChange)="nextPass('content2')"
+              type="string" 
+              placeholder="Código"
+              (focusout)="getProductDetails(form.datos_manual.codigo_manual)"
+              >
+          </mat-form-field>
+        </div>
+        <div class="col-3 col-sm-2">
+          <mat-form-field appearance="outline" class="box">
+            <mat-label>Descripción</mat-label>
+            <input 
+              matInput 
+              [(ngModel)]="form.datos_manual.description" 
+              type="string" 
+              placeholder="Descripción">
+          </mat-form-field>
+        </div>
+        <div class="col-3 col-sm-2">
+          <mat-form-field appearance="outline" class="box">
+            <mat-label>Referencia</mat-label>
+            <input 
+              matInput
+              [(ngModel)]="form.datos_manual.referencia" 
+              type="string" 
+              placeholder="Referencia">
+          </mat-form-field>
+        </div>
+        <div class="col-3 col-sm-2">
+          <mat-form-field appearance="outline" class="box">
+            <mat-label>Codigo guia rápida</mat-label>
+            <input 
+            matInput 
+            [(ngModel)]="form.datos_manual.cod_guia_rapida" 
+            type="string" 
+            placeholder="No_">
+          </mat-form-field>
+        </div>
+        <div class="col-3 col-sm-2">
+          <mat-form-field appearance="outline" class="box">
+            <mat-label>Descripción guia rápida</mat-label>
+            <input 
+              matInput 
+              [(ngModel)]="form.datos_manual.description_guia_rapida" 
+              type="string" 
+              placeholder="Descripción">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-4 offset-sm-1">
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Contenido y notas del documento.</mat-label>
+            <textarea 
+              matInput 
+              [(ngModel)]="form.datos_manual.contenido" 
+              type="string" 
+              placeholder="Contenido"
+              style="height: 74px"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-1" *ngIf="form.datos_manual.codigo_manual !== ''">
+          <ngx-qrcode
+            qrc-element-type="url"
+            [qrc-value]="letsboot"
+            id=qr>
+          </ngx-qrcode>
+        </div>
+        <!--<div class="col-sm-2 vertical-centrar">
+            <button 
+              mat-raised-button color="primary"
+              class="new-form"
+              (click)="addNewVersion()">
+                Nueva Version
+            </button>
+        </div>-->
+      </div>
+      <div class="row">
+        <div class="col-sm-2 offset-sm-1">
+          <span class="title-primary">Puntos de uso</span>
+          <img src="../../../assets/punto-acceso.png" (click)="puntosUso()" style="width: 38px; height: 38px;">
+        </div>
+        <div class="col-lg-6" *ngIf="showPointsUse" style="margin-bottom: 24px">
+          <table mat-table [dataSource]="pointUse" class="mat-elevation-z8">
+            <ng-container matColumnDef="codigo">
+                <th mat-header-cell *matHeaderCellDef> Codigo </th>
+                <td mat-cell *matCellDef="let element"> {{element.no_producto}}</td>
+            </ng-container>
+            <ng-container matColumnDef="descripcion">
+                <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+            </ng-container>
+            <ng-container matColumnDef="referencia">
+              <th mat-header-cell *matHeaderCellDef> Referencia </th>
+              <td mat-cell *matCellDef="let element"> {{element.referencia}} </td>
+          </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="box-contents" [ngClass]="{ 'hide-content': hideContent2 }">
+      <div class="row">
+        <div class="col-6 col-sm-2 offset-sm-1" [ngClass]="{ 'disabled-input': hideContent2}">
+          <mat-form-field appearance="outline" class="box">
+            <mat-label>Codigo Proveedor</mat-label>
+            <input 
+              matInput 
+              [(ngModel)]="form.datos_manual.cod_prod_proveedor" 
+              (ngModelChange)="nextPass('content3')"
+              type="string" 
+              placeholder="Codigo Proveedor">
+          </mat-form-field>
+        </div>
+        <div class="col-6 col-sm-2" [ngClass]="{ 'disabled-input': hideContent2}">
+          <mat-form-field appearance="outline" class="box">
+            <mat-label>Proveedor</mat-label>
+            <input 
+              matInput 
+              [(ngModel)]="form.datos_manual.proveedor" 
+              type="string" 
+              placeholder="Proveedor">
+          </mat-form-field>
+        </div>
+        <div class="col-6 col-sm-2" [ngClass]="{ 'disabled-input': hideContent2}">
+          <mat-form-field appearance="outline" class="box">
+            <mat-label>Formato</mat-label>
+            <mat-select (selectionChange)="select($event.value, 'formato')">
+              <mat-option 
+                *ngFor="let formato of datos.formatos" 
+                [value]="formato.value">
+                {{formato.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-6 col-sm-2" [ngClass]="{ 'disabled-input': hideContent2}">
+          <mat-form-field appearance="outline" class="box">
+            <mat-label>Nº de hojas</mat-label>
+            <input 
+              matInput 
+              [(ngModel)]="form.datos_manual.no_hojas" 
+              type="string" 
+              placeholder="50">
+          </mat-form-field>
+        </div>
+        <div class="col-6 col-sm-2" [ngClass]="{ 'disabled-input': hideContent2}">
+          <mat-form-field appearance="outline" class="box">
+            <mat-label>Versión</mat-label>
+            <input 
+              matInput 
+              [(ngModel)]="form.datos_manual.version" 
+              type="string" 
+              placeholder="0119">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-lg-2 offset-lg-1" [ngClass]="{ 'disabled-input': hideContent2}">
+          <mat-form-field appearance="outline" class="box">
+            <mat-label>Tipo de documentación</mat-label>
+            <mat-select (selectionChange)="select($event.value, 'tipDoc')">
+              <mat-option *ngFor="let tipo of datos.tipoDocumentacion" [value]="tipo">
+                {{tipo}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-lg-2" [ngClass]="{ 'disabled-input': hideContent2}">
+          <mat-form-field appearance="outline" class="box">
+            <mat-label>Familia</mat-label>
+            <mat-select (selectionChange)="select($event.value, 'familia')">
+              <mat-option *ngFor="let familia of datos.familias" [value]="familia">
+                {{familia}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <section class="checkbox-section" [ngClass]="{ 'disabled-input': hideContent2}">
+          <mat-checkbox class="checkbox-margin" [(ngModel)]="form.datos_manual.no_homologar">No se homologa</mat-checkbox>
+        </section>
+      </div>
+    </div>
+  
+    <div class="box-contents" [ngClass]="{ 'hide-content': hideContent3 }">
+      <div class="row">
+        <div class="col-sm-2 offset-sm-1" [ngClass]="{ 'disabled-input': hideContent3}">
+          <p class="title-primary">Tags level 1</p>
+          <mat-form-field appearance="outline" class="box">
+            <mat-select placeholder="Etiqueta" [formControl]="etiquetas1" multiple (selectionChange)="selectTag($event, '1')">
+              <mat-select-trigger>
+                {{etiquetas1.value?.length >= 1 ? etiquetas1.value : ''}}
+              </mat-select-trigger>
+              <div *ngFor="let tag of etiquetasLevel1" >
+                <mat-option [value]="tag.description">
+                  {{tag.description}}
+                  <span (click)="deleteTag(tagS, tag.value)" class="float-right">
+                    <img src="../../../assets/icon-delete.png" style="width: 28px;">
+                  </span>
+                </mat-option>
+              </div>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-2" [ngClass]="{ 'disabled-input': hideContent3}">
+          <p class="title-primary">Tags level 2</p>
+          <mat-form-field appearance="outline" class="box">
+            <mat-select placeholder="Etiqueta" [formControl]="etiquetas2" multiple (selectionChange)="selectTag($event.value, '2')">
+              <mat-select-trigger>
+                {{etiquetas2.value?.length >= 1 ? etiquetas2.value : ''}}
+              </mat-select-trigger>
+              <div *ngFor="let tag of etiquetasLevel2">
+                <mat-option *ngIf="tag.select" [value]="tag.description">
+                    {{tag.description}}
+                    <span (click)="deleteTag(tagS, tag.value)" class="float-right">
+                      <img src="../../../assets/icon-delete.png" style="width: 28px;">
+                    </span>
+                </mat-option>
+              </div>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-2" [ngClass]="{ 'disabled-input': hideContent3}">
+          <p class="title-primary">Tags level 3</p>
+          <mat-form-field appearance="outline" class="box">
+            <mat-select placeholder="Etiqueta" [formControl]="etiquetas3" multiple (selectionChange)="selectTag($event.value, '3')">
+              <mat-select-trigger>
+                {{etiquetas3.value?.length >= 1 ? etiquetas3.value : ''}}
+              </mat-select-trigger>
+              <div *ngFor="let tag of etiquetasLevel3">
+                <mat-option *ngIf="tag.select" [value]="tag.description">
+                  {{tag.description}}
+                  <span (click)="deleteTag(tagS, tag.value)" class="float-right">
+                    <img src="../../../assets/icon-delete.png" style="width: 28px;">
+                  </span>
+                </mat-option>
+              </div>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3" style="margin-top: 36px;" [ngClass]="{ 'disabled-input': hideContent3}">
+          <mat-form-field appearance="outline" class="box">
+            <mat-label>Añadir Tag</mat-label>
+            <input matInput [(ngModel)]="newTag" type="string" placeholder="Tag">
+          </mat-form-field>
+          <button style="margin-left: 24px;" mat-raised-button color="primary" class="new-form"
+            (click)="addTag(newTag)">Añadir
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 offset-lg-1" [ngClass]="{ 'disabled-input': hideContent3}">
+          <mat-form-field appearance="outline" class="box">
+            <mat-select placeholder="Idiomas" [formControl]="idiomas" multiple (selectionChange)="select($event.value, 'idioma')">
+              <mat-select-trigger>
+                {{idiomas.value?.length >= 1 ? " " + idiomas.value : ''}}
+              </mat-select-trigger>
+              <mat-option *ngFor="let idioma of datos.idiomasList" [value]="idioma">{{idioma}}
+
+                  <img src="../../../assets/upload.png" type="file" style="width: 28px;">
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-4" [ngClass]="{ 'disabled-input': hideContent3}">
+          <mat-form-field appearance="outline" class="box">
+            <mat-label>Añadir Idioma</mat-label>
+            <input matInput [(ngModel)]="newIdioma" type="string" placeholder="Idioma">
+          </mat-form-field>
+          <button style="margin-left: 24px;" mat-raised-button color="primary" class="new-form"
+            (click)="addIdioma(newIdioma)">Añadir
+          </button>
+        </div>
+        <div class="col-4 col-lg-4">
+
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-lg-10 offset-lg-1 text-center" [ngClass]="{ 'disabled-input': hideContent3}">
+            <button
+              type="submit"
+              mat-raised-button
+              color="primary"
+              class="new-form"
+              (click)="sendForm()">Submit</button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+  <button (click)="mostrarDatos(usuariomodal)" style="width: 100px; height: 100px; background: blue; border: none;">Mostrar Datos</button>
+  
+  
+  <ng-template #usuariomodal >
+    <div class="modal-header">
+      <h3 class="modal-title">Aqui va a ir el titulo</h3>
+    </div>
+    <div class="modal-body">
+      <div>Nombre</div>
+      <div>Estado</div>
+    </div>
+    <div class="modal-footer">
+      <span>Aqui va a ir el footer</span>
+    </div>
+  </ng-template>
